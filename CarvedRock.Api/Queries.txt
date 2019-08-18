@@ -1,0 +1,9 @@
+﻿// Get all product names and descriptions
+{
+  products {
+    name
+    description
+  }
+}
+
+// 
