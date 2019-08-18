@@ -22,3 +22,48 @@
     name
   }
 }
+
+// URI
+https://localhost:44332/graphql?query={products {name}}
+
+// Aliases, renames products to result and photoFileName to photo
+{
+  result: products {
+    name
+    photo: photoFileName
+  }
+}
+
+// Wont work, has the same name
+{
+  product(id: 1014) { name }
+  product(id: 1015) { name }
+}
+// Solution, works
+{
+  p14: product(id: 1014) { name }
+  p15: product(id: 1015) { name }
+}
+
+// Fragments, no need to specifie fields for all quries
+{
+  p14: product(id: 1014) { ...comparisonField }
+  p15: product(id: 1015) { ...comparisonField }
+}
+
+fragment comparisonField on ProductType {
+  id, name, description
+}
+
+// Naming queries
+// Multiple different queries, needs to be selected in the request body to execute ( "operationName": "p14" )
+query all
+{ products { name } }
+
+query p14
+{ product(id: 1014) { name } }
+
+// Variables, has to be declared after query, ID = IdGraphType(From query field argument), ! = not optional
+// To assign the variable a value, in request body => "variables": { "productId": 1014 }
+query p14($productId:ID!)
+{ product(id: $productId) { name } }
