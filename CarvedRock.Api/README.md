@@ -1,1 +1,1 @@
-<b><h1>Query examples in Queries.txt</h1></b>
+<h1>Query examples in <b>Queries.txt</h1></b>
