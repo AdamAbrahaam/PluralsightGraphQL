@@ -12,6 +12,16 @@ namespace CarvedRock.Api.GraphQL
                 "products",
                 resolve: context => productRepository.GetAll()
                 );
+
+            Field<ProductType>(
+                "product",
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<IdGraphType>>  // NOT optional ID argument
+                    {Name = "id"}),
+                resolve: context =>
+                {
+                    var id = context.GetArgument<int>("id");    // Get the specific ID from context
+                    return productRepository.GetOne(id);
+                });
         }
     }
 }

@@ -25,6 +25,7 @@ namespace CarvedRock.Api
             services.AddDbContext<CarvedRockDbContext>(options =>
                 options.UseSqlServer(_config["ConnectionStrings:CarvedRock"]));
             services.AddScoped<ProductRepository>();
+            services.AddScoped<ProductReviewRepository>();
 
             // GraphQL
             services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(    // if something asks for IDependencyResolver return a new FuncDependencyResolver instance
@@ -33,7 +34,9 @@ namespace CarvedRock.Api
             services.AddScoped<CarvedRockSchema>();
 
             services.AddGraphQL(o => { o.ExposeExceptions = true; })    // Register all the types GrahpQL.Net uses and additional options ( o.XY )
-                .AddGraphTypes(ServiceLifetime.Scoped);
+                .AddGraphTypes( ServiceLifetime.Scoped ) 
+                .AddUserContextBuilder( httpContext => httpContext.User )             // User context(property) provider for authorization, whenever a user context is needed this will be executed
+                .AddDataLoader();                                                     // For cashing data, no unnecessary queries
         }
 
         public void Configure(IApplicationBuilder app, CarvedRockDbContext dbContext)

@@ -6,4 +6,19 @@
   }
 }
 
-// 
+// Get all product names and all review titles
+{
+  products {
+    name
+    reviews{
+      title
+    }
+  }
+}
+
+// Get product by id
+{
+  product(id: 1014) {
+    name
+  }
+}
