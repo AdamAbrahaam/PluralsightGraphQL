@@ -67,3 +67,23 @@ query p14
 // To assign the variable a value, in request body => "variables": { "productId": 1014 }
 query p14($productId:ID!)
 { product(id: $productId) { name } }
+
+// Show field if variable is true, request body: "showPrice": true/false
+query all($showPrice: Boolean!)		// showPrice can initialized => query all($showPrice: Boolean = false)
+{
+  products {
+    name
+    description
+    price @include(if: $showPrice)
+  }
+}
+
+// Hide field if variable is true
+query all($showPrice: Boolean!)
+{
+  products {
+    name
+    description
+    price @skip(if: $showPrice)
+  }
+}
